@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Map of Chicago IL Emission Test & Vehicle Registration Locations | Find Nearest Centers</title>
+  <meta name="description" content="Interactive map of official Chicago and Illinois emission testing centers and vehicle registration locations with hours, addresses, and directions.">
+  <meta name="keywords" content="Illinois emission test locations, Chicago vehicle registration, IL emission testing centers, Chicago DMV locations, Illinois EPA test sites">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="manifest" href="favicon/site.webmanifest">
+  <link rel="shortcut icon" href="favicon/favicon.ico">
+  
+  <!-- Open Graph Tags for Social Sharing -->
+  <meta property="og:title" content="Chicago IL Emission Test & Registration Locations Map">
+  <meta property="og:description" content="Interactive map of all official Chicago emission testing and DMV locations with hours and directions.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yourwebsite.com">
+  <meta property="og:image" content="favicon/android-chrome-512x512.png">
+  
+  <!-- Add canonical URL when you have your domain -->
+  <link rel="canonical" href="https://yourwebsite.com">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    /* Custom styling */
+    .map-container {
+      height: 500px;
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+    body {
+      padding-top: 56px;
+    }
+    /* Add custom container width */
+    .container {
+      max-width: 1000px;  /* Slightly narrower than default Bootstrap container */
+    }
+  </style>
+</head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BDNRJEDENL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BDNRJEDENL');
+</script>
+
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Illinois Vehicle Services Locator</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
+              aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#map-section">Emission Test Map</a></li>
+          <li class="nav-item"><a class="nav-link" href="#sites">Emission Test Info</a></li>
+          <li class="nav-item"><a class="nav-link" href="#registration-map-section">Registration Map</a></li>
+          <li class="nav-item"><a class="nav-link" href="#registration">Registration Info</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container my-4">
+    <header class="mb-4">
+      <h1 class="text-center">Map of Chicago IL Emission Testing</h1>
+      <h1 class="text-center">& Vehicle Registration Centers</h1>
+      <p class="text-center text-muted">Find your nearest official Illinois emission testing center and DMV locations with our interactive maps. Save time with exact addresses, hours, and directions all in one place.</p>
+    </header>
+
+    <br><br>
+    
+    <!-- Emission Test Map Section -->
+    <section id="map-section" class="mb-5">
+      <h2 class="mb-3">Emission Test Interactive Map</h2>
+            
+      <!-- New Emissions Info Box -->
+      <div class="alert alert-primary mb-4">
+        <h4 class="alert-heading">Important Emissions Testing Information</h4>
+        <p><strong>Standard testing hours for all locations:</strong> Monday-Friday 8:00 AM to 6:00 PM and Saturday 7:30 AM to 1:00 PM.<br>
+        Test stations are closed on Sundays and state holidays.</p>
+        <p><strong>Get your emissions test and license plate sticker in one visit!</strong> License plate stickers can be purchased at all High Capacity Drive-Thru Test Stations.</p>
+        <hr>
+        <p>For additional test stations and to find the one nearest you:<br>
+        • Visit: <a href="https://www.IllinoisAirTeam.net" target="_blank">www.IllinoisAirTeam.net</a><br>
+        • Call: <strong>844-258-9071</strong><br>
+        • Email: <a href="mailto:info@IllinoisAirTeam.net">info@IllinoisAirTeam.net</a></p>
+      </div>
+
+      <div id="map" class="map-container"></div>
+    </section>
+
+    <br><br>
+    
+    <!-- Emission Test Sites Information Section -->
+    <section id="sites" class="mb-5">
+      <h2 class="mb-3">Official Illinois Emission Test Centers</h2>
+      <!-- <p class="mb-4">Use the official list below to find Illinois EPA emission testing centers. All locations are verified and updated with current addresses and hours of operation.</p> -->
+      
+      <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#emissionTableCollapse" aria-expanded="false" aria-controls="emissionTableCollapse">
+        <i class="bi bi-chevron-down"></i> Show/Hide Emission Test Centers
+      </button>
+      
+      <div class="collapse" id="emissionTableCollapse">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead class="table-primary">
+              <tr>
+                <th scope="col">Site Name</th>
+                <th scope="col">Address</th>
+                <th scope="col">Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Addison</td>
+                <td>425 S. Lombard Road, Addison, IL</td>
+                <td>High Capacity Drive-Thru</td>
+              </tr>
+              <tr>
+                <td>Bedford Park</td>
+                <td>5231 W. 70th Place, Bedford Park, IL</td>
+                <td>High Capacity Drive-Thru</td>
+              </tr>
+              <tr>
+                <td>Chicago</td>
+                <td>6959 W Forest Preserve Dr, Chicago, IL 60634</td>
+                <td>High Capacity Drive-Thru</td>
+              </tr>
+              <tr>
+                <td>Crystal Lake</td>
+                <td>195 Liberty Road, Crystal Lake, IL</td>
+                <td>High Capacity Drive-Thru</td>
+              </tr>
+              <tr>
+                <td>Joliet</td>
+                <td>3501 Mall Loop Drive, Joliet, IL</td>
+                <td>High Capacity Drive-Thru</td>
+              </tr>
+              <tr>
+                <td>Lincolnshire</td>
+                <td>580 Bond Street, Lincolnshire, IL</td>
+                <td>High Capacity Drive-Thru</td>
+              </tr>
+              <tr>
+                <td>Markham</td>
+                <td>3824 W. 159th Place, Markham, IL</td>
+                <td>High Capacity Drive-Thru</td>
+              </tr>
+              <tr>
+                <td>Naperville</td>
+                <td>435 Weston Ridge Drive, Naperville, IL</td>
+                <td>High Capacity Drive-Thru</td>
+              </tr>
+              <tr>
+                <td>Schaumburg</td>
+                <td>1675 Mitchell Boulevard, Schaumburg, IL</td>
+                <td>High Capacity Drive-Thru</td>
+              </tr>
+              <tr>
+                <td>Skokie</td>
+                <td>3555 Jarvis Avenue, Skokie, IL</td>
+                <td>High Capacity Drive-Thru</td>
+              </tr>
+              <tr>
+                <td>Waukegan</td>
+                <td>2161 Northwestern Avenue, Waukegan, IL</td>
+                <td>High Capacity Drive-Thru</td>
+              </tr>
+              <tr>
+                <td>Pontoon Beach</td>
+                <td>1000 E. Chain of Rocks Road, Pontoon Beach, IL</td>
+                <td>High Capacity Drive-Thru (Metro-East)</td>
+              </tr>
+              <tr>
+                <td>Swansea</td>
+                <td>4200 Trade Court, Swansea, IL</td>
+                <td>High Capacity Drive-Thru (Metro-East)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <br><br>
+    
+    <!-- Vehicle Registration Map Section -->
+    <section id="registration-map-section" class="mb-5">
+      <h2 class="mb-3">Vehicle Registration Interactive Map</h2>
+
+      <!-- New Online Options Box -->
+      <div class="alert alert-success mb-4">
+        <h4 class="alert-heading">Renew Online - Skip The Line!</h4>
+        <p>Take advantage of these convenient renewal options:</p>
+        <ul>
+          <li><strong>Online:</strong> Visit <a href="https://www.ilsos.gov" target="_blank">ILSOS.gov</a> (Use your registration ID and PIN located on your renewal notice)</li>
+          <li><strong>Phone:</strong> Call 866-545-9609</li>
+          <li><strong>Mail:</strong> Send a check with your license plate number and return the renewal postcard to:<br>
+            Renewals Section<br>
+            501 S Second St<br>
+            Springfield, IL 62756
+          </li>
+        </ul>
+        <hr>
+        <p class="mb-0"><strong>Go paperless!</strong> Sign up to receive your vehicle registration renewal notices by email at <a href="https://www.ilsos.gov" target="_blank">ILSOS.gov</a></p>
+      </div>
+      
+      <div id="registration-map" class="map-container"></div>
+    </section>
+
+    <br><br>
+    
+    <!-- Vehicle Registration Information Section -->
+    <section id="registration" class="mb-5">
+      <h2 class="mb-3">Official Illinois Vehicle Registration Locations</h2>
+      <!-- <p class="mb-4">Find the nearest in-person vehicle registration center along with their addresses and operating hours.</p> -->
+      
+      <button class="btn btn-success mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#registrationTableCollapse" aria-expanded="false" aria-controls="registrationTableCollapse">
+        <i class="bi bi-chevron-down"></i> Show/Hide Registration Centers
+      </button>
+      
+      <div class="collapse" id="registrationTableCollapse">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead class="table-success">
+              <tr>
+                <th scope="col">Office Name</th>
+                <th scope="col">Address</th>
+                <th scope="col">Operating Hours</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Chicago Vehicle Services</td>
+                <td>100 W Randolph St, Chicago, IL 60601</td>
+                <td>Mon-Fri: 8am-5pm<br>Sat: 9am-2pm<br>Sun: Closed</td>
+              </tr>
+              <tr>
+                <td>Evanston Registration Center</td>
+                <td>200 Ridge Ave, Evanston, IL</td>
+                <td>Mon-Fri: 9am-6pm<br>Sat: 10am-4pm<br>Sun: Closed</td>
+              </tr>
+              <tr>
+                <td>Oak Park Registration Office</td>
+                <td>50 Oak St, Oak Park, IL</td>
+                <td>Mon-Fri: 8am-4:30pm<br>Sat: Closed<br>Sun: Closed</td>
+              </tr>
+              <tr>
+                <td>Cicero Registration Center</td>
+                <td>3500 W 26th Ave, Cicero, IL</td>
+                <td>Mon-Fri: 8:30am-5pm<br>Sat: Closed<br>Sun: Closed</td>
+              </tr>
+              <tr>
+                <td>Skokie Registration Office</td>
+                <td>1500 Central Ave, Skokie, IL</td>
+                <td>Mon-Fri: 8am-5pm<br>Sat: Closed<br>Sun: Closed</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-light py-4 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>About This Resource</h5>
+          <p class="small">I created this site after getting a vehicle registration and emission test notice. When trying to find testing centers, I hit a roadblock. Most search results only showed text listings of locations. Finding the closest center meant searching each one on maps separately. Many sites had wrong info - not official locations or not for Chicago tests. This page fixes that problem by putting all correct locations on a map.</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <p class="small text-muted">Last Updated: March 2025</p>
+        </div>
+      </div>
+      
+      <!-- New disclaimer and license section -->
+      <div class="row mt-3 pt-3 border-top">
+        <div class="col-md-7">
+          <h6>Disclaimer</h6>
+          <p class="small">This website is not affiliated with, endorsed by, or officially connected to the Illinois Secretary of State, Illinois EPA, or any government agency. All information is collected from official sources but may change without notice. Please verify details before visiting any location.</p>
+        </div>
+        <div class="col-md-5">
+          <h6>License</h6>
+          <p class="small">© 2025 Steve Shao. This work is licensed under the <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>. You may freely use, modify and share this resource, provided you include the original copyright notice.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // Initialize Emission Test Sites Map
+    var map = L.map('map').setView([41.8500, -87.6500], 9);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    var testLocations = [
+      { name: "Addison", address: "425 S. Lombard Road, Addison, IL", coords: [41.91181, -88.01290] },
+      { name: "Bedford Park", address: "5231 W. 70th Place, Bedford Park, IL", coords: [41.76526, -87.75464] },
+      { name: "Chicago", address: "6959 W Forest Preserve Dr, Chicago, IL 60634", coords: [41.9563, -87.80189] },
+      { name: "Crystal Lake", address: "195 Liberty Road, Crystal Lake, IL", coords: [42.22437, -88.29384] },
+      { name: "Joliet", address: "3501 Mall Loop Drive, Joliet, IL", coords: [41.50917, -88.13223] },
+      { name: "Lincolnshire", address: "580 Bond Street, Lincolnshire, IL", coords: [42.19245, -87.94489] },
+      { name: "Markham", address: "3824 W. 159th Place, Markham, IL", coords: [41.60005, -87.71405] },
+      { name: "Naperville", address: "435 Weston Ridge Drive, Naperville, IL", coords: [41.80366, -88.20075] },
+      { name: "Schaumburg", address: "1675 Mitchell Boulevard, Schaumburg, IL", coords: [42.05928, -88.09377] },
+      { name: "Skokie", address: "3555 Jarvis Avenue, Skokie, IL", coords: [42.01671, -87.71005] },
+      { name: "Waukegan", address: "2161 Northwestern Avenue, Waukegan, IL", coords: [42.37970, -87.86515] },
+      { name: "Pontoon Beach", address: "1000 E. Chain of Rocks Road, Pontoon Beach, IL", coords: [38.74539, -90.07425] },
+      { name: "Swansea", address: "4200 Trade Court, Swansea, IL", coords: [38.55175, -89.99093] }
+    ];
+    testLocations.forEach(function(loc) {
+      L.marker(loc.coords).addTo(map)
+        .bindPopup("<strong>" + loc.name + "</strong><br>" + loc.address + 
+                  "<br><br><strong>Hours:</strong><br>Mon-Fri: 8:00 AM - 6:00 PM<br>Sat: 7:30 AM - 1:00 PM<br>Sun: Closed");
+    });
+
+    // Initialize Vehicle Registration Map
+    var regMap = L.map('registration-map').setView([41.8500, -87.6500], 10);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(regMap);
+    var regLocations = [
+      { name: "Chicago Vehicle Services", address: "100 W Randolph St, Chicago, IL 60601", coords: [41.8830, -87.6300], hours: "Mon-Fri: 8am-5pm<br>Sat: 9am-2pm<br>Sun: Closed" },
+      { name: "Evanston Registration Center", address: "200 Ridge Ave, Evanston, IL", coords: [42.0451, -87.6877], hours: "Mon-Fri: 9am-6pm<br>Sat: 10am-4pm<br>Sun: Closed" },
+      { name: "Oak Park Registration Office", address: "50 Oak St, Oak Park, IL", coords: [41.8859, -87.7845], hours: "Mon-Fri: 8am-4:30pm<br>Sat: Closed<br>Sun: Closed" },
+      { name: "Cicero Registration Center", address: "3500 W 26th Ave, Cicero, IL", coords: [41.8439, -87.7444], hours: "Mon-Fri: 8:30am-5pm<br>Sat: Closed<br>Sun: Closed" },
+      { name: "Skokie Registration Office", address: "1500 Central Ave, Skokie, IL", coords: [42.0330, -87.7344], hours: "Mon-Fri: 8am-5pm<br>Sat: Closed<br>Sun: Closed" }
+    ];
+    regLocations.forEach(function(loc) {
+      L.marker(loc.coords).addTo(regMap)
+        .bindPopup("<strong>" + loc.name + "</strong><br>" + loc.address + 
+                  "<br><br><strong>Hours:</strong><br>" + loc.hours);
+    });
+  </script>
+</body>
+</html>
+
