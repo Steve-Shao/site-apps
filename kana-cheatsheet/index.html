@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日语五十音图与汉字来源对照表</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>日语五十音图与汉字来源对照表</h1>
+    <div class="main-container">
+        <p class="main-desc">本表有两种学习模式：</p>
+        <ul class="main-list">
+            <li><strong>假名记忆</strong>：点击"隐藏假名"，用罗马音回忆假名写法。</li>
+            <li><strong>读音记忆</strong>：点击"隐藏假名"，用右侧例词回忆假名发音。</li>
+        </ul>
+        <div class="knowledge-btn-container">
+            <button id="toggle-kana" class="knowledge-btn">假名知识 ▼</button>
+            <button id="toggle-accent" class="knowledge-btn">读音知识 ▼</button>
+        </div>
+    </div>
+    <div id="kana-section" class="knowledge-section">
+        <div class="knowledge-content">
+            <h3 class="knowledge-title">日语假名简介</h3>
+            <p><strong>平假名</strong>（蓝色）：基础假名，源自汉字草书，线条圆润，常用于语法成分。</p>
+            <p><strong>片假名</strong>（深绿）：源自汉字部首简化，线条硬朗，常用于外来语、拟声词、专有名词。</p>
+            <p>两种假名发音相同，写法不同。本表展示假名与来源汉字的对应关系，便于记忆。</p>
+        </div>
+    </div>
+    <div id="accent-section" class="knowledge-section">
+        <div class="knowledge-content">
+            <h3 class="knowledge-title">日语读音与重音</h3>
+            <p>每行第一个假名确定辅音，每列确定元音。如"か(ka)"中"k"为辅音，"a"为元音。</p>
+            <p>日语重音表示音高，不是音量。例词中：</p>
+            <p><span class="accent-high">红线</span>为高音，<span class="accent-low">蓝线</span>为低音。</p>
+            <p>常见重音：第一个音节低，第二个高，然后降调，如「あ<span class="accent-high">め</span>」（雨）。</p>
+        </div>
+    </div>
+    <div class="button-container">
+        <button id="toggle-jp-btn" class="toggle-btn">隐藏假名</button>
+        <button id="toggle-hint-btn" class="toggle-btn">显示联想词</button>
+        <button id="toggle-example-mode-btn" class="toggle-btn">切换到片假名例词</button>
+    </div>
+    <div class="spacer"></div>
+    <div id="table-container"></div>
+    <script>
+    // --- Utility Functions ---
+    function createStyledSpan(text, className) {
+        const span = document.createElement('span');
+        span.textContent = text;
+        span.className = className;
+        return span;
+    }
+
+    function toggleSection(section, btn, otherSection, otherBtn, label) {
+        const expanded = !!section.style.maxHeight;
+        section.style.maxHeight = expanded ? null : '300px';
+        btn.textContent = label + (expanded ? ' ▼' : ' ▲');
+        btn.classList.toggle('active', !expanded);
+        otherSection.style.maxHeight = null;
+        otherBtn.textContent = otherBtn.id === 'toggle-kana' ? '假名知识 ▼' : '读音知识 ▼';
+        otherBtn.classList.remove('active');
+    }
+
+    function setupKnowledgeCards() {
+        const kanaSection = document.getElementById('kana-section');
+        const accentSection = document.getElementById('accent-section');
+        const kanaBtn = document.getElementById('toggle-kana');
+        const accentBtn = document.getElementById('toggle-accent');
+
+        kanaBtn.onclick = () => toggleSection(kanaSection, kanaBtn, accentSection, accentBtn, '假名知识');
+        accentBtn.onclick = () => toggleSection(accentSection, accentBtn, kanaSection, kanaBtn, '读音知识');
+    }
+
+    // --- Data Definitions ---
+    const hiraganaExampleWords = [
+        [['あんしん','安心','安心',[0,1,1,1]],['いか','以下','以下',[1,0]],['うちゅう','宇宙','宇宙',[1,0,0,0]],['いえ','家','家',[0,1]],['おける','於ける','于，关于',[0,1,0]]],
+        [['かさん','加算','加法',[0,1,1]],['きか','幾何','几何学',[1,0]],['くおん','久遠','久远',[0,1,1]],['けいさん','計算','计算',[0,1,1,1]],['ここ','此処','这里',[0,1]]],
+        [['させつ','左折','左转',[0,1,1]],['すし','寿司','寿司',[1,0]],['すんし','寸志','一点心意',[1,0,0]],['せかい','世界','世界',[1,0,0]],['そうそふ','曾祖父','曾祖父',[0,1,1,0]]],
+        [['たいよう','太陽','太阳',[1,0,0,0]],['ちしき','知識','知识',[1,0,0]],['つなみ','津波','海啸',[0,1,1]],['てんき','天気','天气',[1,0,0]],['とめる','止める','停止',[0,1,1]]],
+        [['ならく','奈落','地狱',[0,1,1]],['なに','何','什么',[1,0]],['いぬ','犬','狗',[0,1]],['ねこ','猫','猫',[1,0]],['この','此の','这个',[0,1]]],
+        [['はらん','波乱','动荡',[0,1,1]],['ひかく','比較','比较',[0,1,1]],['ふあん','不安','不安',[0,1,1]],['へや','部屋','房间',[0,1]],['ほけん','保険','保险',[0,1,1]]],
+        [['ねんまつ','年末','年底',[0,1,1,1]],['みち','道','道路',[0,1]],['むしゃ','武者','武士',[1,0,0]],['むすめ','娘','少女',[0,1,1]],['うもう','羽毛','羽毛',[0,1,1]]],
+        [['やさい','野菜','蔬菜',[0,1,1]],[' ',' ',' ',[]],['りゆう','理由','理由',[0,1,1]],[' ',' ',' ',[]],['さんよ','参与','参与',[1,0,0]]],
+        [['らく','乐','快乐',[0,1]],['りえき','利益','利益',[1,0,0]],['るす','留守','留守',[1,0]],['れいはい','礼拝','礼拜',[0,1,1,1]],['ろく','六','六',[0,1]]],
+        [['へいわ','平和','平静',[0,1,1]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],['','-','-',[]]],
+        null,
+        [['せんせい','先生','老师',[0,1,1,0]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]],
+        null,
+        [['がっこう','学校','学校',[0,1,0,0]],['ぎんこう','银行','银行',[0,1,0,0]],['ぐんたい','军队','军队',[0,1,0,0]],['げんき','健康','健康',[0,1,0]],['ごはん','ご饭','饭',[0,1,0]]],
+        [['ざっし','杂志','杂志',[0,1,0]],['じかん','时间','时间',[0,1,0]],['ずいぶん','随分','相当',[0,1,0,0]],['ぜんぶ','全部','全部',[0,1,0]],['ぞう','象','大象',[0,1]]],
+        [['だいがく','大学','大学',[0,1,0,0]],['ぢから','力','力量',[0,1,0]],['づくえ','机','桌子',[0,1,0]],['でんわ','电话','电话',[0,1,0]],['どうぶつ','动物','动物',[0,1,0,0]]],
+        [['ばしょ','场所','场所',[0,1,0]],['びょうき','疾病','疾病',[0,1,0,0]],['ぶんぽう','语法','语法',[0,1,0,0]],['べんきょう','学习','学习',[0,1,0,0,0]],['ぼうし','帽子','帽子',[0,1,0]]],
+        null,
+        [['ぱん','面包','面包',[1,0]],['ぴかぴか','闪闪发光','闪闪发光',[0,1,0,1,0]],['ぷーる','游泳池','游泳池',[1,0,0]],['ぺん','钢笔','钢笔',[1,0]],['ぽけっと','口袋','口袋',[0,1,0,0]]]
+    ].map(row => row?.map(([kana, kanji, meaning, accent]) => ({kana, kanji, meaning, accent})));
+
+    const katakanaExampleWords = [
+        [['アン','案','plan',[0,1]],['イカ','烏賊','squid',[1,0]],['ウニ','海胆','urchin',[1,0]],['エビ','海老','shrimp',[1,0]],['オケ','桶','bucket',[0,1]]],
+        [['アン','案','plan',[0,1]],['イカ','烏賊','squid',[1,0]],['ウニ','海胆','urchin',[1,0]],['エビ','海老','shrimp',[1,0]],['オケ','桶','bucket',[0,1]]],
+    ].map(row => row?.map(([kana, kanji, meaning, accent]) => ({kana, kanji, meaning, accent})));
+
+    // --- Table Generation ---
+    function generateTable(config, exampleWords) {
+        const container = document.getElementById('table-container');
+        const table = document.createElement('table');
+        const rows = [
+            {name: '元音行', cells: [0,1,2,3,4]},
+            {name: 'K行', cells: [5,6,7,8,9]},
+            {name: 'S行', cells: [10,11,12,13,14]},
+            {name: 'T行', cells: [15,16,17,18,19]},
+            {name: 'N行', cells: [20,21,22,23,24]},
+            {name: 'H行', cells: [25,26,27,28,29]},
+            {name: 'M行', cells: [30,31,32,33,34]},
+            {name: 'Y行', cells: [35,null,36,null,37]},
+            {name: 'R行', cells: [38,39,40,41,42]},
+            {name: 'W行', cells: [43,null,null,null,44]},
+            {name: ' ', cells: [null,null,null,null,null]},
+            {name: '拨音', cells: [45,null,null,null,null]},
+            {name: ' ', cells: [null,null,null,null,null]},
+            {name: '浊音G行', cells: [46,47,48,49,50]},
+            {name: '浊音Z行', cells: [51,52,53,54,55]},
+            {name: '浊音D行', cells: [56,57,58,59,60]},
+            {name: '浊音B行', cells: [61,62,63,64,65]},
+            {name: ' ', cells: [null,null,null,null,null]},
+            {name: '半浊音P', cells: [66,67,68,69,70]}
+        ];
+        const ganaData = [
+            ['あ','安','安','ア','阿','.','a'],['い','以','以','イ','伊','.','i'],['う','宇','五','ウ','宇',' ','u'],['え','衣','诶','エ','江',' ','e'],['お','於','哦','オ','於',' ','o'],
+            ['か','加','咖','カ','加',' ','ka'],['き','幾',' ','キ','幾',' ','ki'],['く','久',':<','ク','久',' ','ku'],['け','计','计','ケ','介',' ','ke'],['こ','己','口','コ','己',' ','ko'],
+            ['さ','左','三','サ','散',' ','sa'],['し','之','辶','シ','之',' ','shi'],['す','寸',' ','ス','須',' ','su'],['せ','世','世','セ','世','世','se'],['そ','曾','受','ソ','曾',' ','so'],
+            ['た','太','太','タ','多',' ','ta'],['ち','知','奇','チ','千',' ','chi'],['つ','川','刍','ツ','川',' ','tsu'],['て','天','天','テ','天',' ','te'],['と','止',' ','ト','止',' ','to'],
+            ['な','奈','奈','ナ','奈',' ','na'],['に','仁',' ','ニ','仁',' ','ni'],['ぬ','奴','奴','ヌ','奴',' ','nu'],['ね','祢',' ','ネ','祢',' ','ne'],['の','乃','no','ノ','乃',' ','no'],
+            ['は','波',' ','ハ','八',' ','ha'],['ひ','比',' ','ヒ','比',' ','hi'],['ふ','不',' ','フ','不',' ','fu'],['へ','部','`へ`','ヘ','部',' ','he'],['ほ','保','活','ホ','保',' ','ho'],
+            ['ま','末','.','マ','末',' ','ma'],['み','美','米','ミ','三',' ','mi'],['む','武','木','ム','牟',' ','mu'],['め','女','妹','メ','女',' ','me'],['も','毛','毛','モ','毛',' ','mo'],
+            ['や','也','.','ヤ','也',' ','ya'],['ゆ','由','鱼','ユ','由',' ','yu'],['よ','与','右','ヨ','與',' ','yo'],
+            ['ら','良',' ','ラ','良',' ','ra'],['り','利','.','リ','利',' ','ri'],['る','留','鲁','ル','流',' ','ru'],['れ','礼','.','レ','礼',' ','re'],['ろ','呂',' ','ロ','呂',' ','ro'],
+            ['わ','和',' ','ワ','和',' ','wa'],['を','遠',' ','ヲ','遠',' ','wo'],
+            ['ん','无','n','ン','尓',' ','n'],
+            ['が','加',' ','ガ','加',' ','ga'],['ぎ','幾',' ','ギ','幾',' ','gi'],['ぐ','久',' ','グ','久',' ','gu'],['げ','计',' ','ゲ','介',' ','ge'],['ご','己',' ','ゴ','己',' ','go'],
+            ['ざ','左',' ','ザ','散',' ','za'],['じ','之',' ','ジ','之',' ','ji'],['ず','寸',' ','ズ','須',' ','zu'],['ぜ','世',' ','ゼ','世',' ','ze'],['ぞ','曾',' ','ゾ','曾',' ','zo'],
+            ['だ','太',' ','ダ','多',' ','da'],['ぢ','知','奇','ヂ','千',' ','ji'],['づ','川',' ','ヅ','川',' ','zu'],['で','天',' ','デ','天',' ','de'],['ど','止',' ','ド','止',' ','do'],
+            ['ば','奈',' ','バ','奈',' ','ba'],['び','仁',' ','ビ','仁',' ','bi'],['ぶ',' ','不','ブ','奴',' ','bu'],['べ','祢',' ','ベ','祢',' ','be'],['ぼ','乃',' ','ボ','乃',' ','bo'],
+            ['ぱ','波',' ','パ','八',' ','pa'],['ぴ','比',' ','ピ','比',' ','pi'],['ぷ','不',' ','プ','不',' ','pu'],['ぺ','部',' ','ペ','部',' ','pe'],['ぽ','保',' ','ポ','保',' ','po']
+        ].map(([h, hS, hH, k, kS, kH, r]) => ({
+            hiragana: h, hiraganaSource: hS, hiraganaHint: hH, katakana: k, katakanaSource: kS, katakanaHint: kH, romanji: r
+        }));
+
+        // 表头
+        const headerRow = document.createElement('tr');
+        headerRow.appendChild(document.createElement('th'));
+        const columnHeaders = ['あ段 (a)', 'い段 (i)', 'う段 (u)', 'え段 (e)', 'お段 (o)'];
+        for (let col = 0; col < config.totalColumns; col++) {
+            const th = document.createElement('th');
+            th.className = 'column-header';
+            th.style.width = '10%';
+            if (col < config.splitColumns) {
+                th.colSpan = config.subColsPerCol;
+                th.textContent = columnHeaders[col];
+            } else {
+                th.textContent = `例词${col-config.splitColumns+1}`;
+            }
+            headerRow.appendChild(th);
+        }
+        table.appendChild(headerRow);
+
+        // 表格内容
+        for (let rowIdx = 0; rowIdx < rows.length; rowIdx++) {
+            const rowData = rows[rowIdx];
+            for (let subRow = 0; subRow < config.subRowsPerRow; subRow++) {
+                const tr = document.createElement('tr');
+                tr.className = 'sub-row';
+                if (subRow === 0) {
+                    const rowHeader = document.createElement('th');
+                    rowHeader.className = 'row-header';
+                    rowHeader.textContent = rowData.name;
+                    if (config.subRowsPerRow > 1) rowHeader.rowSpan = config.subRowsPerRow;
+                    if (rowIdx > 0) tr.classList.add('main-row-separator');
+                    tr.appendChild(rowHeader);
+                }
+                // 假名/罗马字/来源
+                for (let col = 0; col < config.splitColumns; col++) {
+                    const cellIndex = rowData.cells[col];
+                    for (let subCol = 0; subCol < config.subColsPerCol; subCol++) {
+                        const td = document.createElement('td');
+                        td.className = 'sub-col';
+                        td.style.width = (10/config.subColsPerCol) + '%';
+                        td.style.height = '30px';
+                        if (subCol === 0 && col > 0) td.classList.add('main-column-separator');
+                        if (cellIndex !== null) {
+                            if (subRow === 0 && subCol === 0)
+                                td.appendChild(createStyledSpan(ganaData[cellIndex].hiragana, 'jp-char hiragana-char'));
+                            else if (subRow === 1 && subCol === 0)
+                                td.appendChild(createStyledSpan(ganaData[cellIndex].hiraganaHint, 'jp-char hint-char hint-hiragana'));
+                            else if (subRow === 1 && subCol === 2)
+                                td.appendChild(createStyledSpan(ganaData[cellIndex].katakanaHint, 'jp-char hint-char hint-katakana'));
+                            else if (subRow === 2 && subCol === 0)
+                                td.appendChild(createStyledSpan(ganaData[cellIndex].hiraganaSource, 'jp-char hiragana-source'));
+                            else if (subRow === 1 && subCol === 1)
+                                td.appendChild(createStyledSpan(ganaData[cellIndex].romanji, 'romanji-char'));
+                            else if (subRow === 0 && subCol === 2)
+                                td.appendChild(createStyledSpan(ganaData[cellIndex].katakana, 'jp-char katakana-char'));
+                            else if (subRow === 2 && subCol === 2)
+                                td.appendChild(createStyledSpan(ganaData[cellIndex].katakanaSource, 'jp-char katakana-source'));
+                        }
+                        tr.appendChild(td);
+                    }
+                }
+                // 例词
+                for (let col = config.splitColumns; col < config.totalColumns; col++) {
+                    const td = document.createElement('td');
+                    td.className = 'example-word';
+                    td.style.width = '10%';
+                    td.style.height = '30px';
+                    if (col === config.splitColumns) td.classList.add('major-section-separator');
+                    else if (col > config.splitColumns) td.classList.add('main-column-separator');
+                    if (exampleWords[rowIdx]) {
+                        const colIndex = col - config.splitColumns;
+                        const example = exampleWords[rowIdx]?.[colIndex];
+                        if (example) {
+                            if (subRow === 0) {
+                                for (let i = 0; i < example.kana.length; i++) {
+                                    const span = document.createElement('span');
+                                    span.textContent = example.kana[i];
+                                    span.className = `accent-mark hiragana-char ${example.accent[i] === 1 ? 'accent-high' : 'accent-low'}`;
+                                    td.appendChild(span);
+                                }
+                                td.style.fontWeight = 'bold';
+                            } else if (subRow === 1) {
+                                td.textContent = example.kanji;
+                                td.classList.add('hiragana-source');
+                            } else if (subRow === 2) {
+                                td.textContent = example.meaning;
+                                td.classList.add('katakana-source');
+                            }
+                        }
+                    }
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+        }
+        container.appendChild(table);
+    }
+
+    // --- Main Logic ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const config = { totalColumns: 10, subRowsPerRow: 3, splitColumns: 5, subColsPerCol: 3 };
+        let exampleMode = 'hiragana';
+        let hintHidden = true;
+
+        function getCurrentExampleWords() {
+            return exampleMode === 'hiragana' ? hiraganaExampleWords : katakanaExampleWords;
+        }
+
+        function regenerateTable() {
+            document.getElementById('table-container').innerHTML = '';
+            generateTable(config, getCurrentExampleWords());
+            document.querySelectorAll('.hint-char').forEach(e => {
+                e.classList.toggle('hidden', hintHidden);
+            });
+            document.getElementById('toggle-hint-btn').textContent = hintHidden ? '显示联想词' : '隐藏联想词';
+        }
+
+        // 初始化表格和按钮
+        generateTable(config, getCurrentExampleWords());
+        document.querySelectorAll('.hint-char').forEach(e => e.classList.add('hidden'));
+
+        document.getElementById('toggle-jp-btn').onclick = function() {
+            const elements = document.querySelectorAll('.jp-char:not(.hint-char)');
+            const isHidden = elements[0]?.classList.contains('hidden');
+            elements.forEach(e => e.classList.toggle('hidden'));
+            this.textContent = isHidden ? '隐藏假名' : '显示假名';
+        };
+
+        document.getElementById('toggle-hint-btn').onclick = function() {
+            const elements = document.querySelectorAll('.hint-char');
+            const isHidden = elements[0]?.classList.contains('hidden');
+            elements.forEach(e => e.classList.toggle('hidden'));
+            hintHidden = !isHidden;
+            this.textContent = isHidden ? '隐藏联想词' : '显示联想词';
+        };
+
+        document.getElementById('toggle-example-mode-btn').onclick = function() {
+            exampleMode = exampleMode === 'hiragana' ? 'katakana' : 'hiragana';
+            this.textContent = exampleMode === 'hiragana' ? '切换到片假名例词' : '切换到平假名例词';
+            regenerateTable();
+        };
+
+        setupKnowledgeCards();
+    });
+    </script>
+</body>
+</html>

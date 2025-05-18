@@ -1,0 +1,14 @@
+# macOS system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# VS Code workspace files
+*.code-workspace
+
+# Temporary folders
+temp*/
