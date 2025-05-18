@@ -7,20 +7,20 @@ body, table, th, td {
 .hint-char,
 .hiragana-source,
 .katakana-source {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
 }
 .example-word {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
 }
 body {
-    margin: 20px;
+    margin: 0;
 }
 table {
     border-collapse: collapse;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1100px;
     min-width: 1100px;
     margin: 0 auto;
 }
@@ -82,14 +82,14 @@ h1 {
 }
 .toggle-btn {
     padding: 8px 16px;
-    background-color: #4CAF50;
+    background-color: #FB8C00;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 .toggle-btn:hover {
-    background-color: #45a049;
+    background-color: #EF6C00;
 }
 .hidden {
     opacity: 0;
@@ -102,6 +102,12 @@ h1 {
     max-height: 0;
     background: #f8f9fa;
     border-radius: 8px;
+    margin-top: 0;
+    transition: max-height 0.0s ease, margin 0.0s ease;
+}
+.knowledge-section:not([style*="max-height"]) {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 .knowledge-content {
     padding: 15px;
@@ -114,10 +120,11 @@ h1 {
     margin: 10px auto 5px;
 }
 .knowledge-btn {
+    font-weight: bold;
     padding: 5px 12px;
-    background-color: #f2f2f2;
-    color: #333;
-    border: 1px solid #ddd;
+    background-color: #3949AB;
+    color: white;
+    border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.9em;
@@ -126,11 +133,11 @@ h1 {
     transition: background-color 0.1s;
 }
 .knowledge-btn:hover {
-    background-color: #e6e6e6;
+    background-color: #303F9F;
 }
 .knowledge-btn.active {
-    background-color: #dcdcdc;
-    border-color: #ccc;
+    background-color: #1A237E;
+    border-color: #0D1859;
 }
 .main-container {
     max-width: 800px;
@@ -189,11 +196,52 @@ h1 {
 }
 .accent-mark {
     position: relative;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
     padding: 2px 0;
 }
 .table-cell {
     width: 10%;
     height: 30px;
+}
+.menu-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #1A237E;
+    padding: 0 32px;
+    height: 56px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    margin-bottom: 0;
+}
+.menu-logo {
+    color: #fff;
+    font-size: 1.3em;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.menu-links {
+    list-style: none;
+    display: flex;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+}
+.menu-links li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1em;
+    transition: color 0.2s;
+}
+.menu-links li a:hover {
+    color: #ffd700;
+}
+.pinyin-char {
+    color: gray;
+    font-size: 0.95em;
+    display: block;
+    text-align: center;
+}
+.button-container button {
+    font-weight: bold;
 } 

@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Menu Bar Start -->
+    <nav class="menu-bar">
+        <div class="menu-logo">Kana Cheatsheet</div>
+        <ul class="menu-links">
+            <li><a href="https://apps.steveshao.com">apps.steveshao.com</a></li>
+        </ul>
+    </nav>
+    <!-- Menu Bar End -->
     <h1>日语五十音图与汉字来源对照表</h1>
     <div class="main-container">
         <p class="main-desc">本表有两种学习模式：</p>
@@ -14,30 +22,45 @@
             <li><strong>假名记忆</strong>：点击"隐藏假名"，用罗马音回忆假名写法。</li>
             <li><strong>读音记忆</strong>：点击"隐藏假名"，用右侧例词回忆假名发音。</li>
         </ul>
+        <br>
         <div class="knowledge-btn-container">
-            <button id="toggle-kana" class="knowledge-btn">假名知识 ▼</button>
-            <button id="toggle-accent" class="knowledge-btn">读音知识 ▼</button>
+            <button id="toggle-kana" class="knowledge-btn">什么是假名 ▼</button>
+            <button id="toggle-accent" class="knowledge-btn">日语的声调 ▼</button>
         </div>
     </div>
     <div id="kana-section" class="knowledge-section">
         <div class="knowledge-content">
-            <h3 class="knowledge-title">日语假名简介</h3>
-            <p><strong>平假名</strong>（蓝色）：基础假名，源自汉字草书，线条圆润，常用于语法成分。</p>
-            <p><strong>片假名</strong>（深绿）：源自汉字部首简化，线条硬朗，常用于外来语、拟声词、专有名词。</p>
-            <p>两种假名发音相同，写法不同。本表展示假名与来源汉字的对应关系，便于记忆。</p>
+            <h3 class="knowledge-title">假名是日语中的的表音文字</h3>
+            <p><strong>平假名</strong>（九宫格左上）：基础假名，源自汉字（九宫格左下）草书，线条圆润。</p>
+            <p><strong>片假名</strong>（九宫格右上）：源自汉字（九宫格右下）部首简化，线条硬朗，常用于外来语、拟声词、专有名词。</p>
+            <p>两种假名发音相同，写法不同；类似于英语中的<strong>小写字母</strong>和<strong>大写字母</strong>。</p>
+            <p>九宫格的正中央为假名对应的<strong>罗马音</strong>。</p>
+            <p>部分罗马音上方用灰色标注了<strong>拼音</strong>，方便中国用户发音。</p>
         </div>
     </div>
     <div id="accent-section" class="knowledge-section">
         <div class="knowledge-content">
-            <h3 class="knowledge-title">日语读音与重音</h3>
-            <p>每行第一个假名确定辅音，每列确定元音。如"か(ka)"中"k"为辅音，"a"为元音。</p>
-            <p>日语重音表示音高，不是音量。例词中：</p>
-            <p><span class="accent-high">红线</span>为高音，<span class="accent-low">蓝线</span>为低音。</p>
-            <p>常见重音：第一个音节低，第二个高，然后降调，如「あ<span class="accent-high">め</span>」（雨）。</p>
+            <h3 class="knowledge-title">日语的声调包含高音和低音，有以下规律：</h3>
+            <ul>
+                <li>第一个音和第二个音不会是同音。</li>
+                <li>从高音降到低音后，不会再升回高音。</li>
+                <li>“高音变低音”发生在第几个音后，就是几型发音（可以是0、1、2、3、4 .... ）。</li>
+            </ul>
+            <p>表格右侧示例单词中，<span class="accent-high">红线</span>代表高音(重音)，<span class="accent-low">蓝线</span>为低音。</p>
+            <p>例如：</p>
+            <ul>
+                <li><strong>“<span class="accent-low">う</span><span class="accent-high">え</span>”</strong>的声调类似于“<span class="accent-low">我</span><span class="accent-high">哥</span>”。（0型读音）</li>
+                <br>
+                <li><strong>“<span class="accent-high">あ</span><span class="accent-low">か</span>”</strong>的声调类似于“<span class="accent-high">哥</span><span class="accent-low">哥</span>”。（1型读音）</li>
+                <br>
+                <li><strong>“<span class="accent-low">あ</span><span class="accent-high">お</span><span class="accent-low">い</span>”</strong>的声调类似于“<span class="accent-low">我</span><span class="accent-high">哥</span><span class="accent-low">哥</span>”。（2型读音）</li>
+            </ul>
         </div>
     </div>
+    <br>
     <div class="button-container">
         <button id="toggle-jp-btn" class="toggle-btn">隐藏假名</button>
+        <button id="toggle-pinyin-btn" class="toggle-btn">显示拼音</button>
         <button id="toggle-hint-btn" class="toggle-btn">显示联想词</button>
         <button id="toggle-example-mode-btn" class="toggle-btn">切换到片假名例词</button>
     </div>
@@ -54,11 +77,11 @@
 
     function toggleSection(section, btn, otherSection, otherBtn, label) {
         const expanded = !!section.style.maxHeight;
-        section.style.maxHeight = expanded ? null : '300px';
+        section.style.maxHeight = expanded ? null : '600px';
         btn.textContent = label + (expanded ? ' ▼' : ' ▲');
         btn.classList.toggle('active', !expanded);
         otherSection.style.maxHeight = null;
-        otherBtn.textContent = otherBtn.id === 'toggle-kana' ? '假名知识 ▼' : '读音知识 ▼';
+        otherBtn.textContent = otherBtn.id === 'toggle-kana' ? '什么是假名 ▼' : '日语的声调 ▼';
         otherBtn.classList.remove('active');
     }
 
@@ -68,8 +91,8 @@
         const kanaBtn = document.getElementById('toggle-kana');
         const accentBtn = document.getElementById('toggle-accent');
 
-        kanaBtn.onclick = () => toggleSection(kanaSection, kanaBtn, accentSection, accentBtn, '假名知识');
-        accentBtn.onclick = () => toggleSection(accentSection, accentBtn, kanaSection, kanaBtn, '读音知识');
+        kanaBtn.onclick = () => toggleSection(kanaSection, kanaBtn, accentSection, accentBtn, '什么是假名');
+        accentBtn.onclick = () => toggleSection(accentSection, accentBtn, kanaSection, kanaBtn, '日语的声调');
     }
 
     // --- Data Definitions ---
@@ -97,7 +120,24 @@
 
     const katakanaExampleWords = [
         [['アン','案','plan',[0,1]],['イカ','烏賊','squid',[1,0]],['ウニ','海胆','urchin',[1,0]],['エビ','海老','shrimp',[1,0]],['オケ','桶','bucket',[0,1]]],
-        [['アン','案','plan',[0,1]],['イカ','烏賊','squid',[1,0]],['ウニ','海胆','urchin',[1,0]],['エビ','海老','shrimp',[1,0]],['オケ','桶','bucket',[0,1]]],
+        [[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]],
+        [[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]],
+        [[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]],
+        [[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]],
+        [[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]],
+        [[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]],
+        [[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]],
+        [[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]],
+        [[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]],
+        null,
+        [[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]],
+        null,
+        [[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]],
+        [[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]],
+        [[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]],
+        [[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]],
+        null,
+        [[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]],[' ',' ',' ',[]]]
     ].map(row => row?.map(([kana, kanji, meaning, accent]) => ({kana, kanji, meaning, accent})));
 
     // --- Table Generation ---
@@ -126,24 +166,24 @@
             {name: '半浊音P', cells: [66,67,68,69,70]}
         ];
         const ganaData = [
-            ['あ','安','安','ア','阿','.','a'],['い','以','以','イ','伊','.','i'],['う','宇','五','ウ','宇',' ','u'],['え','衣','诶','エ','江',' ','e'],['お','於','哦','オ','於',' ','o'],
-            ['か','加','咖','カ','加',' ','ka'],['き','幾',' ','キ','幾',' ','ki'],['く','久',':<','ク','久',' ','ku'],['け','计','计','ケ','介',' ','ke'],['こ','己','口','コ','己',' ','ko'],
-            ['さ','左','三','サ','散',' ','sa'],['し','之','辶','シ','之',' ','shi'],['す','寸',' ','ス','須',' ','su'],['せ','世','世','セ','世','世','se'],['そ','曾','受','ソ','曾',' ','so'],
-            ['た','太','太','タ','多',' ','ta'],['ち','知','奇','チ','千',' ','chi'],['つ','川','刍','ツ','川',' ','tsu'],['て','天','天','テ','天',' ','te'],['と','止',' ','ト','止',' ','to'],
-            ['な','奈','奈','ナ','奈',' ','na'],['に','仁',' ','ニ','仁',' ','ni'],['ぬ','奴','奴','ヌ','奴',' ','nu'],['ね','祢',' ','ネ','祢',' ','ne'],['の','乃','no','ノ','乃',' ','no'],
-            ['は','波',' ','ハ','八',' ','ha'],['ひ','比',' ','ヒ','比',' ','hi'],['ふ','不',' ','フ','不',' ','fu'],['へ','部','`へ`','ヘ','部',' ','he'],['ほ','保','活','ホ','保',' ','ho'],
-            ['ま','末','.','マ','末',' ','ma'],['み','美','米','ミ','三',' ','mi'],['む','武','木','ム','牟',' ','mu'],['め','女','妹','メ','女',' ','me'],['も','毛','毛','モ','毛',' ','mo'],
-            ['や','也','.','ヤ','也',' ','ya'],['ゆ','由','鱼','ユ','由',' ','yu'],['よ','与','右','ヨ','與',' ','yo'],
-            ['ら','良',' ','ラ','良',' ','ra'],['り','利','.','リ','利',' ','ri'],['る','留','鲁','ル','流',' ','ru'],['れ','礼','.','レ','礼',' ','re'],['ろ','呂',' ','ロ','呂',' ','ro'],
-            ['わ','和',' ','ワ','和',' ','wa'],['を','遠',' ','ヲ','遠',' ','wo'],
-            ['ん','无','n','ン','尓',' ','n'],
-            ['が','加',' ','ガ','加',' ','ga'],['ぎ','幾',' ','ギ','幾',' ','gi'],['ぐ','久',' ','グ','久',' ','gu'],['げ','计',' ','ゲ','介',' ','ge'],['ご','己',' ','ゴ','己',' ','go'],
-            ['ざ','左',' ','ザ','散',' ','za'],['じ','之',' ','ジ','之',' ','ji'],['ず','寸',' ','ズ','須',' ','zu'],['ぜ','世',' ','ゼ','世',' ','ze'],['ぞ','曾',' ','ゾ','曾',' ','zo'],
-            ['だ','太',' ','ダ','多',' ','da'],['ぢ','知','奇','ヂ','千',' ','ji'],['づ','川',' ','ヅ','川',' ','zu'],['で','天',' ','デ','天',' ','de'],['ど','止',' ','ド','止',' ','do'],
-            ['ば','奈',' ','バ','奈',' ','ba'],['び','仁',' ','ビ','仁',' ','bi'],['ぶ',' ','不','ブ','奴',' ','bu'],['べ','祢',' ','ベ','祢',' ','be'],['ぼ','乃',' ','ボ','乃',' ','bo'],
-            ['ぱ','波',' ','パ','八',' ','pa'],['ぴ','比',' ','ピ','比',' ','pi'],['ぷ','不',' ','プ','不',' ','pu'],['ぺ','部',' ','ペ','部',' ','pe'],['ぽ','保',' ','ポ','保',' ','po']
-        ].map(([h, hS, hH, k, kS, kH, r]) => ({
-            hiragana: h, hiraganaSource: hS, hiraganaHint: hH, katakana: k, katakanaSource: kS, katakanaHint: kH, romanji: r
+            ['あ','安','安','ア','阿','.','a',''],['い','以','以','イ','伊','.','i',''],['う','宇','五','ウ','宇',' ','u',''],['え','衣','诶','エ','江',' ','e',''],['お','於','哦','オ','於',' ','o',''],
+            ['か','加','咖','カ','加',' ','ka',''],['き','幾',' ','キ','幾',' ','ki',''],['く','久',':<','ク','久',' ','ku',''],['け','计','计','ケ','介',' ','ke',''],['こ','己','口','コ','己',' ','ko',''],
+            ['さ','左','三','サ','散',' ','sa',''],['し','之','辶','シ','之',' ','shi','xi'],['す','寸',' ','ス','須',' ','su',''],['せ','世','世','セ','世','世','se',''],['そ','曾','受','ソ','曾',' ','so',''],
+            ['た','太','太','タ','多',' ','ta',''],['ち','知','奇','チ','千',' ','chi','qi'],['つ','川','刍','ツ','川',' ','tsu','ci'],['て','天','天','テ','天',' ','te',''],['と','止',' ','ト','止',' ','to',''],
+            ['な','奈','奈','ナ','奈',' ','na',''],['に','仁',' ','ニ','仁',' ','ni',''],['ぬ','奴','奴','ヌ','奴',' ','nu',''],['ね','祢',' ','ネ','祢',' ','ne',''],['の','乃','no','ノ','乃',' ','no',''],
+            ['は','波',' ','ハ','八',' ','ha',''],['ひ','比',' ','ヒ','比',' ','hi',''],['ふ','不',' ','フ','不',' ','fu',''],['へ','部','`へ`','ヘ','部',' ','he',''],['ほ','保','活','ホ','保',' ','ho',''],
+            ['ま','末','.','マ','末',' ','ma',''],['み','美','米','ミ','三',' ','mi',''],['む','武','木','ム','牟',' ','mu',''],['め','女','妹','メ','女',' ','me',''],['も','毛','毛','モ','毛',' ','mo',''],
+            ['や','也','.','ヤ','也',' ','ya',''],['ゆ','由','鱼','ユ','由',' ','yu',''],['よ','与','右','ヨ','與',' ','yo',''],
+            ['ら','良',' ','ラ','良',' ','ra','la'],['り','利','.','リ','利',' ','ri','li'],['る','留','鲁','ル','流',' ','ru','lu'],['れ','礼','.','レ','礼',' ','re','le'],['ろ','呂',' ','ロ','呂',' ','ro','lo'],
+            ['わ','和',' ','ワ','和',' ','wa',''],['を','遠',' ','ヲ','遠',' ','wo',''],
+            ['ん','无','n','ン','尓',' ','n',''],
+            ['が','加',' ','ガ','加',' ','ga',''],['ぎ','幾',' ','ギ','幾',' ','gi',''],['ぐ','久',' ','グ','久',' ','gu',''],['げ','计',' ','ゲ','介',' ','ge',''],['ご','己',' ','ゴ','己',' ','go',''],
+            ['ざ','左',' ','ザ','散',' ','za',''],['じ','之',' ','ジ','之',' ','ji',''],['ず','寸',' ','ズ','須',' ','zu','zi'],['ぜ','世',' ','ゼ','世',' ','ze',''],['ぞ','曾',' ','ゾ','曾',' ','zo',''],
+            ['だ','太',' ','ダ','多',' ','da',''],['ぢ','知','奇','ヂ','千',' ','ji',''],['づ','川',' ','ヅ','川',' ','zu','zi'],['で','天',' ','デ','天',' ','de',''],['ど','止',' ','ド','止',' ','do',''],
+            ['ば','奈',' ','バ','奈',' ','ba',''],['び','仁',' ','ビ','仁',' ','bi',''],['ぶ',' ','不','ブ','奴',' ','bu',''],['べ','祢',' ','ベ','祢',' ','be',''],['ぼ','乃',' ','ボ','乃',' ','bo',''],
+            ['ぱ','波',' ','パ','八',' ','pa',''],['ぴ','比',' ','ピ','比',' ','pi',''],['ぷ','不',' ','プ','不',' ','pu',''],['ぺ','部',' ','ペ','部',' ','pe',''],['ぽ','保',' ','ポ','保',' ','po','']
+        ].map(([h, hS, hH, k, kS, kH, r, p]) => ({
+            hiragana: h, hiraganaSource: hS, hiraganaHint: hH, katakana: k, katakanaSource: kS, katakanaHint: kH, romanji: r, pinyin: p
         }));
 
         // 表头
@@ -190,6 +230,8 @@
                         if (cellIndex !== null) {
                             if (subRow === 0 && subCol === 0)
                                 td.appendChild(createStyledSpan(ganaData[cellIndex].hiragana, 'jp-char hiragana-char'));
+                            else if (subRow === 0 && subCol === 1)
+                                td.appendChild(createStyledSpan(ganaData[cellIndex].pinyin, 'pinyin-char'));
                             else if (subRow === 1 && subCol === 0)
                                 td.appendChild(createStyledSpan(ganaData[cellIndex].hiraganaHint, 'jp-char hint-char hint-hiragana'));
                             else if (subRow === 1 && subCol === 2)
@@ -248,6 +290,7 @@
         const config = { totalColumns: 10, subRowsPerRow: 3, splitColumns: 5, subColsPerCol: 3 };
         let exampleMode = 'hiragana';
         let hintHidden = true;
+        let pinyinHidden = false;
 
         function getCurrentExampleWords() {
             return exampleMode === 'hiragana' ? hiraganaExampleWords : katakanaExampleWords;
@@ -259,7 +302,11 @@
             document.querySelectorAll('.hint-char').forEach(e => {
                 e.classList.toggle('hidden', hintHidden);
             });
+            document.querySelectorAll('.pinyin-char').forEach(e => {
+                e.classList.toggle('hidden', pinyinHidden);
+            });
             document.getElementById('toggle-hint-btn').textContent = hintHidden ? '显示联想词' : '隐藏联想词';
+            document.getElementById('toggle-pinyin-btn').textContent = pinyinHidden ? '显示拼音' : '隐藏拼音';
         }
 
         // 初始化表格和按钮
@@ -279,6 +326,14 @@
             elements.forEach(e => e.classList.toggle('hidden'));
             hintHidden = !isHidden;
             this.textContent = isHidden ? '隐藏联想词' : '显示联想词';
+        };
+
+        document.getElementById('toggle-pinyin-btn').onclick = function() {
+            const elements = document.querySelectorAll('.pinyin-char');
+            const isHidden = elements[0]?.classList.contains('hidden');
+            elements.forEach(e => e.classList.toggle('hidden'));
+            pinyinHidden = !isHidden;
+            this.textContent = isHidden ? '隐藏拼音' : '显示拼音';
         };
 
         document.getElementById('toggle-example-mode-btn').onclick = function() {
